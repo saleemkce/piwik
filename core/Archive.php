@@ -560,9 +560,13 @@ class Archive
         if ($idSubtable !== null
             && $idSubtable != self::ID_SUBTABLE_LOAD_ALL_SUBTABLES
         ) {
+            $subtables = array();
             foreach ($archiveNames as &$name) {
+                $subtables[] = $this->appendIdSubtable($name, 'subtables');
                 $name = $this->appendIdsubtable($name, $idSubtable);
             }
+
+            $archiveNames = array_merge($archiveNames, $subtables);
         }
 
         $result = new Archive\DataCollection(
@@ -589,7 +593,26 @@ class Archive
             }
 
             $resultRow = & $result->get($idSite, $periodStr);
-            $resultRow[$row['name']] = $value;
+
+            if (Common::stringEndsWith($row['name'], '_subtables')) {
+                $value = unserialize($value);
+                $rawName = substr($row['name'], 0, -1 * strlen('subtables'));
+
+                if ($idSubtable === self::ID_SUBTABLE_LOAD_ALL_SUBTABLES) {
+                    foreach ($value as $key => $val) {
+                        if (array_key_exists($key, $value)) {
+                            $resultRow[$rawName . $key] = $value[$key];
+                        }
+                    }
+                } else {
+                    if (array_key_exists($idSubtable, $value)) {
+                        $resultRow[$rawName . $idSubtable] = $value[$idSubtable];
+                    }
+                }
+            } else {
+                $resultRow[$row['name']] = $value;
+            }
+
         }
 
         return $result;
