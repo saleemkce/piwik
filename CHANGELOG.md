@@ -25,6 +25,12 @@ This is a changelog for Piwik platform developers. All changes for our HTTP API'
   * `isIpInRange()`
   * `getHostByAddr()`
 
+### Deprecations
+* `API` classes should no longer have a protected constructor. Classes with a protected constructor will generate a notice in the logs and should expose a public constructor instead.
+
+### New features
+* `API` classes can now use dependency injection in their constructor to inject other instances.
+
 ## Piwik 2.11.0
 
 ### Breaking Changes
