@@ -8,6 +8,7 @@
  */
 
 describe("PiwikUpdater", function () {
+    this.timeout(0);
 
     this.fixture = "Piwik\\Plugins\\CoreUpdater\\Tests\\Fixtures\\FailUpdateHttpsFixture";
 
