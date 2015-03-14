@@ -8,8 +8,8 @@
 
 namespace Piwik\Plugins\CoreUpdater\tests\Mock;
 
+use Piwik\Plugins\CoreUpdater\ArchiveDownloadException;
 use Piwik\Plugins\CoreUpdater\Updater;
-use Piwik\Plugins\CoreUpdater\UpdaterException;
 use Piwik\Translation\Translator;
 
 class UpdaterMock extends Updater
@@ -38,7 +38,9 @@ class UpdaterMock extends Updater
     {
         // Simulate that the update over HTTPS fails
         if ($https) {
-            throw new UpdaterException(new \Exception('Error while downloading Piwik'), array());
+            // The actual error message depends on the OS, the HTTP method etc.
+            // This is what I get on my machine, but it doesn't really matter
+            throw new ArchiveDownloadException(new \Exception('curl_exec: SSL certificate problem: Invalid certificate chain. Hostname requested was: piwik.org'), array());
         }
 
         // Simulate that the update over HTTP succeeds

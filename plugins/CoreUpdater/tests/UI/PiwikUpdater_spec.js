@@ -8,7 +8,6 @@
  */
 
 describe("PiwikUpdater", function () {
-    this.timeout(0);
 
     this.fixture = "Piwik\\Plugins\\CoreUpdater\\Tests\\Fixtures\\FailUpdateHttpsFixture";
 
@@ -17,6 +16,18 @@ describe("PiwikUpdater", function () {
     it("should show a new version is available", function (done) {
         expect.screenshot("newVersion").to.be.capture(function (page) {
             page.load(url);
+        }, done);
+    });
+
+    it("should offer to update over http when updating over https fails", function (done) {
+        expect.screenshot("httpsUpdateFail").to.be.capture(function (page) {
+            page.click('#updateAutomatically');
+        }, done);
+    });
+
+    it("should show the update steps when updating over http succeeds", function (done) {
+        expect.screenshot("httpUpdateSuccess").to.be.capture(function (page) {
+            page.click('#updateUsingHttp');
         }, done);
     });
 });
