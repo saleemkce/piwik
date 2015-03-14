@@ -153,11 +153,13 @@ class Piwik_TestingEnvironment
         // Apply DI config from the fixture
         if ($testingEnvironment->fixtureClass) {
             $fixtureClass = $testingEnvironment->fixtureClass;
-            /** @var Fixture $fixture */
-            $fixture = new $fixtureClass;
-            $diConfig = $fixture->provideContainerConfig();
-            if (!empty($diConfig)) {
-                StaticContainer::addDefinitions($diConfig);
+            if (class_exists($fixtureClass)) {
+                /** @var Fixture $fixture */
+                $fixture = new $fixtureClass;
+                $diConfig = $fixture->provideContainerConfig();
+                if (!empty($diConfig)) {
+                    StaticContainer::addDefinitions($diConfig);
+                }
             }
         }
 
